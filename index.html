@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Enrollment System</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Student Enrollment System</h1>
+    
+    <label for="subjectSelect">Select a subject:</label>
+    <select id="subjectSelect">
+        <option value="DSA">DSA</option>
+        <option value="PL">PL</option>
+        <option value="Networks">Networks</option>
+    </select>
+    
+    <div>
+        <button onclick="setOperation('enroll')">Enroll</button>
+        <button onclick="setOperation('unenroll')">Unenroll</button>
+        <button onclick="showSubjects()">Select Another Subject</button>
+        <button onclick="exitProgram()">Exit</button>
+    </div>
+    
+    <div id="enrollmentSection" class="hidden">
+        <label for="studentName">Enter student name:</label>
+        <input type="text" id="studentName">
+        <button onclick="processEnrollment()">Submit</button>
+    </div>
+    
+    <div id="unenrollmentSection" class="hidden">
+        <label for="unenrollName">Enter student name to unenroll:</label>
+        <input type="text" id="unenrollName">
+        <button onclick="processUnenrollment()">Submit</button>
+    </div>
+    
+    <h2>Enrolled Students</h2>
+    <div>
+        <p>DSA: <span id="dsaList"></span></p>
+        <p>PL: <span id="plList"></span></p>
+        <p>Networks: <span id="networksList"></span></p>
+    </div>
+
+    <script>
+        let DSA = [];
+        let PL = [];
+        let Networks = [];
+
+        function setOperation(operation) {
+            document.getElementById('enrollmentSection').classList.add('hidden');
+            document.getElementById('unenrollmentSection').classList.add('hidden');
+            if (operation === 'enroll') {
+                document.getElementById('enrollmentSection').classList.remove('hidden');
+            } else if (operation === 'unenroll') {
+                document.getElementById('unenrollmentSection').classList.remove('hidden');
+            }
+        }
+
+        function processEnrollment() {
+            const subject = document.getElementById('subjectSelect').value;
+            const studentName = document.getElementById('studentName').value;
+            if (subject === 'DSA') {
+                DSA.push(studentName);
+            } else if (subject === 'PL') {
+                PL.push(studentName);
+            } else if (subject === 'Networks') {
+                Networks.push(studentName);
+            }
+            updateStudentLists();
+            document.getElementById('studentName').value = '';
+        }
+
+        function processUnenrollment() {
+            const subject = document.getElementById('subjectSelect').value;
+            const studentName = document.getElementById('unenrollName').value;
+            if (subject === 'DSA') {
+                DSA = DSA.filter(name => name !== studentName);
+            } else if (subject === 'PL') {
+                PL = PL.filter(name => name !== studentName);
+            } else if (subject === 'Networks') {
+                Networks = Networks.filter(name => name !== studentName);
+            }
+            updateStudentLists();
+            document.getElementById('unenrollName').value = '';
+        }
+
+        function updateStudentLists() {
+            document.getElementById('dsaList').innerText = DSA.join(', ');
+            document.getElementById('plList').innerText = PL.join(', ');
+            document.getElementById('networksList').innerText = Networks.join(', ');
+        }
+
+        function showSubjects() {
+            document.getElementById('enrollmentSection').classList.add('hidden');
+            document.getElementById('unenrollmentSection').classList.add('hidden');
+        }
+
+        function exitProgram() {
+            alert("Program exited.");
+        }
+    </script>
+
+</body>
+</html>
